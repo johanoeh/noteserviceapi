@@ -1,7 +1,7 @@
 {
   "id": "1",
   "name": "how_to_use_bamboo",
-  "format": "txt",
+  "format":"txt",
   "tags": [
     "continuous integration",
     "bamboo",
