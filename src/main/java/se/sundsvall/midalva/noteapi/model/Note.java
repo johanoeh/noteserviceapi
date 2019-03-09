@@ -6,9 +6,11 @@ import java.util.List;
 public class Note {
 
     private long id;
-    private String content;
+
+    private String format;
     private String name;
     private List<String> tags;
+    private String content;
 
     public long getId() {
         return id;
@@ -18,22 +20,32 @@ public class Note {
         this.id = id;
     }
 
-    public String getContent() {
-        return content;
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<String> getTags() {
-        if (tags == null)
-            tags = new ArrayList<>();
         return tags;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public void setContent(String content) {
@@ -49,6 +61,6 @@ public class Note {
             tags.forEach(tag -> sb.append(tag).append(","));
             tagStr = sb.substring(0,sb.lastIndexOf(","))+"]";
         }
-        return String.format("Note[ id=%s, name=%s, tags=%s, content=%s ]", id, name, tagStr, content);
+        return String.format("Note[ id=%s, name=%s, tags=%s, format=%s, content=%s ]", id, name, tagStr, format,content);
     }
 }

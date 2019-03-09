@@ -1,0 +1,11 @@
+{
+  "id": "1",
+  "name": "how_to_use_bamboo",
+  "format": "txt",
+  "tags": [
+    "continuous integration",
+    "bamboo",
+    "maven"
+  ],
+  "content": "You first have to install Bamboo continuous integration plattform"
+}
