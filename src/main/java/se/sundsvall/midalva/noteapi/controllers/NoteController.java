@@ -24,6 +24,6 @@ public class NoteController {
     @Produces(MediaType.APPLICATION_JSON)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public  void addNote(@RequestBody Note note){
-        LOG.info(note.toString());
+        LOG.debug(note.toString());
     }
 }
