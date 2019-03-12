@@ -8,7 +8,7 @@ public class NoteTest {
     private static  final String NAME ="NAME";
     private static final String FORMAT="FORMAT";
     private static final String CONTENT ="CONTENT";
-    private static final long ID =1L;
+    private static final Long ID =1L;
 
     @Test
     public void testSetName() {
