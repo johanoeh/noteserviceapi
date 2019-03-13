@@ -1,9 +1,10 @@
 package se.sundsvall.midalva.noteapi.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class NoteRequest {
+public class NoteDTO {
 
 
     private Long noteId;
@@ -40,6 +41,10 @@ public class NoteRequest {
 
 
     public List<String> getTags() {
+
+        if (tags == null) {
+            tags = new ArrayList<>();
+        }
         return tags;
     }
 
@@ -59,12 +64,12 @@ public class NoteRequest {
     public String toString() {
 
         final StringBuilder sb = new StringBuilder();
-         String tagStr="";
+        String tagStr = "";
         if (tags != null) {
             sb.append("[");
             tags.forEach(tag -> sb.append(tag).append(","));
-            tagStr = sb.substring(0,sb.lastIndexOf(","))+"]";
+            tagStr = sb.substring(0, sb.lastIndexOf(",")) + "]";
         }
-        return String.format("Note[ noteId=%s, name=%s, tags=%s, format=%s, content=%s ]", noteId, name, tagStr, format,content);
+        return String.format("Note[ noteId=%s, name=%s, tags=%s, format=%s, content=%s ]", noteId, name, tagStr, format, content);
     }
 }

@@ -8,12 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import se.sundsvall.midalva.noteapi.model.Note;
 import se.sundsvall.midalva.noteapi.model.NoteHasTag;
-import se.sundsvall.midalva.noteapi.model.NoteRequest;
+import se.sundsvall.midalva.noteapi.model.NoteDTO;
 import se.sundsvall.midalva.noteapi.model.Tag;
 import se.sundsvall.midalva.noteapi.repo.NoteHasTagRepository;
 import se.sundsvall.midalva.noteapi.repo.NoteRepository;
 import se.sundsvall.midalva.noteapi.repo.TagRepository;
-import sun.rmi.runtime.Log;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -21,7 +20,6 @@ import javax.ws.rs.core.MediaType;
 
 
 @RestController
-
 @RequestMapping("/note")
 public class NoteController {
 
@@ -38,12 +36,12 @@ public class NoteController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public  void addNote(@RequestBody NoteRequest note){
+    public  void addNote(@RequestBody NoteDTO note){
         handleRequest(note);
 
     }
 
-    private void handleRequest(NoteRequest request){
+    private void handleRequest(NoteDTO request){
 
         Note note = new Note();
         note.setName(request.getName());
@@ -54,19 +52,21 @@ public class NoteController {
 
         request.getTags().forEach(t->{
 
-            Tag tag= new Tag();
-            tag.setTag(t);
-            Tag foundTag = tagRepository.findByTag(t);
 
-            if( foundTag == null ){
+            Tag tmpTag = tagRepository.findByTag(t);
+
+            if( tmpTag == null ){
+                Tag tag= new Tag();
+                tag.setTag(t);
                 tagRepository.save(tag);
             }
 
-            LOG.info("TagId: "+tag.getTagId().toString()+" noteId: "+note.getNoteId());
+
+            tmpTag = tagRepository.findByTag(t);
 
 
             NoteHasTag hasTag = new NoteHasTag();
-            hasTag.setTag(tag);
+            hasTag.setTag(tmpTag);
             hasTag.setNote(note);
             hasTagRepository.save(hasTag);
 

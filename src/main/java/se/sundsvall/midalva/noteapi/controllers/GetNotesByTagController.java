@@ -2,13 +2,14 @@ package se.sundsvall.midalva.noteapi.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import se.sundsvall.midalva.noteapi.mapper.NoteMapper;
 import se.sundsvall.midalva.noteapi.model.Note;
 import se.sundsvall.midalva.noteapi.model.NoteDTO;
 import se.sundsvall.midalva.noteapi.model.NoteHasTag;
+import se.sundsvall.midalva.noteapi.model.Tag;
 import se.sundsvall.midalva.noteapi.repo.NoteHasTagRepository;
 import se.sundsvall.midalva.noteapi.repo.NoteRepository;
 import se.sundsvall.midalva.noteapi.repo.TagRepository;
-import se.sundsvall.midalva.noteapi.mapper.NoteMapper;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class GetNoteController {
+public class GetNotesByTagController {
 
     @Autowired
     private NoteRepository noteRepository;
@@ -28,29 +29,35 @@ public class GetNoteController {
     NoteHasTagRepository hasTagRepository;
 
     @GetMapping
-    @RequestMapping(path = "/note/{id}")
+    @RequestMapping(path="/note/tag/{tag}")
     @Produces(MediaType.APPLICATION_JSON)
-    public NoteDTO getNote(@PathVariable("id") Long id) {
+    public List<NoteDTO> getNote(@PathVariable("tag") String tag) {
 
-        Optional<Note> noteOptional = noteRepository.findById(id);
-        NoteDTO noteDTO = null;
+        List<NoteDTO> noteDTOs = new ArrayList<>();
 
-        if (noteOptional.isPresent()) {
+        List<Long> ids = new ArrayList<>();
 
-            Note note = noteOptional.get();
+        Tag t = tagRepository.findByTag(tag);
+        List<NoteHasTag> byTag = hasTagRepository.findByTagTagId(t.getTagId());
+
+        byTag.forEach(fTag->{
+
+            Long noteId = fTag.getNote().getNoteId();
+            List<NoteHasTag> hasTags = hasTagRepository.findByNoteNoteId(noteId);
             List<String> tags = new ArrayList<>();
-            List<NoteHasTag> byNoteId = hasTagRepository.findByNoteNoteId(note.getNoteId());
-            byNoteId.forEach(t -> {
-                tags.add(t.getTag().getTag());
+
+            hasTags.forEach(hasTag->{
+                tags.add(hasTag.getTag().getTag());
             });
 
-            noteDTO = NoteMapper.map(note,tags);
+           noteDTOs.add(NoteMapper.map(fTag.getNote(),tags));
+
+        });
 
 
 
-        }
-        return noteDTO;
+
+        return noteDTOs;
     }
-
 
 }
