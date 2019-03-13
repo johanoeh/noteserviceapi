@@ -19,6 +19,7 @@ public class GetNoteController {
     @RequestMapping(path="/note/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Note getNote(@PathVariable("id") Long id) {
+
         Optional<Note> note = repo.findById(id);
 
         if (note.isPresent()){

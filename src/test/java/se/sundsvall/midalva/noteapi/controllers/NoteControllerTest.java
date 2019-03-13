@@ -34,7 +34,6 @@ public class NoteControllerTest {
 
     public static final String JSON_REQUEST =
             "{\n" +
-                "  \"id\": \"1\",\n" +
                 "  \"name\": \"how_to_use_bamboo\",\n" +
                 "  \"format\":\"txt\",\n" +
                 "  \"tags\": [\n" +

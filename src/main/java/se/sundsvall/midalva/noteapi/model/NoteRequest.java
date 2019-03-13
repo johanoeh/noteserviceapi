@@ -3,18 +3,15 @@ package se.sundsvall.midalva.noteapi.model;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name = "Note")
-public class Note {
+public class NoteRequest {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+
     private Long noteId;
 
     private String format;
     private String name;
 
-
+    private List<String> tags;
     private String content;
 
     public Long getNoteId() {
@@ -41,6 +38,15 @@ public class Note {
         this.name = name;
     }
 
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     public String getContent() {
         return content;
     }
@@ -51,7 +57,14 @@ public class Note {
 
     @Override
     public String toString() {
-        return String.format("Note[ noteId=%s, name=%s, format=%s, content=%s ]", noteId, name, format,content);
-    }
 
+        final StringBuilder sb = new StringBuilder();
+         String tagStr="";
+        if (tags != null) {
+            sb.append("[");
+            tags.forEach(tag -> sb.append(tag).append(","));
+            tagStr = sb.substring(0,sb.lastIndexOf(","))+"]";
+        }
+        return String.format("Note[ noteId=%s, name=%s, tags=%s, format=%s, content=%s ]", noteId, name, tagStr, format,content);
+    }
 }

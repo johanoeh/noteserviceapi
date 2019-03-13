@@ -8,17 +8,17 @@ public class Tag {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    private Long tagId;
 
     @Column(name="tag", unique=true)
     private String tag;
 
-    public long getId() {
-        return id;
+    public Long getTagId() {
+        return tagId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setTagId(Long tagId) {
+        this.tagId = tagId;
     }
 
     public String getTag() {
