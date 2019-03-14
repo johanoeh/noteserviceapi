@@ -64,7 +64,6 @@ public class NoteController {
 
             tmpTag = tagRepository.findByTag(t);
 
-
             NoteHasTag hasTag = new NoteHasTag();
             hasTag.setTag(tmpTag);
             hasTag.setNote(note);
