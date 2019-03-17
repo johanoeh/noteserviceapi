@@ -10,6 +10,7 @@ import se.sundsvall.midalva.noteapi.model.*;
 import se.sundsvall.midalva.noteapi.repo.NoteHasTagRepository;
 import se.sundsvall.midalva.noteapi.repo.NoteRepository;
 import se.sundsvall.midalva.noteapi.repo.TagRepository;
+import se.sundsvall.midalva.noteapi.service.NoteService;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -21,12 +22,8 @@ import java.util.Optional;
 public class GetNotesByTagController {
 
     @Autowired
-    private NoteRepository noteRepository;
+    NoteService noteService;
 
-    @Autowired
-    TagRepository tagRepository;
-    @Autowired
-    NoteHasTagRepository hasTagRepository;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleException(Exception e){
@@ -38,37 +35,8 @@ public class GetNotesByTagController {
     @RequestMapping(path="/note/tag/{tag}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<NoteDTO> getNote(@PathVariable("tag") String tag) {
-
-        List<NoteDTO> noteDTOs = new ArrayList<>();
-
-        List<Long> ids = new ArrayList<>();
-
-        Tag t = tagRepository.findByTag(tag);
-        List<NoteHasTag> byTag = hasTagRepository.findByTagTagId(t.getTagId());
-
-        if(byTag.isEmpty()){
-
-            throw  new NoteNotFoundException("Couldn't find any Note tagged with: '"+tag+"'");
-        }
-
-        byTag.forEach(fTag->{
-
-            Long noteId = fTag.getNote().getNoteId();
-            List<NoteHasTag> hasTags = hasTagRepository.findByNoteNoteId(noteId);
-            List<String> tags = new ArrayList<>();
-
-            hasTags.forEach(hasTag->{
-                tags.add(hasTag.getTag().getTag());
-            });
-
-           noteDTOs.add(NoteMapper.map(fTag.getNote(),tags));
-
-        });
-
-
-
-
-        return noteDTOs;
+       return noteService.findNotesByTag(tag);
     }
+
 
 }

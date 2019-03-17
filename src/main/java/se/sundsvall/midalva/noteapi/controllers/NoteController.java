@@ -13,6 +13,7 @@ import se.sundsvall.midalva.noteapi.model.Tag;
 import se.sundsvall.midalva.noteapi.repo.NoteHasTagRepository;
 import se.sundsvall.midalva.noteapi.repo.NoteRepository;
 import se.sundsvall.midalva.noteapi.repo.TagRepository;
+import se.sundsvall.midalva.noteapi.service.NoteService;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -30,6 +31,9 @@ public class NoteController {
     @Autowired
     NoteHasTagRepository hasTagRepository;
 
+    @Autowired
+    NoteService noteService;
+
     private  final Logger LOG =  LoggerFactory.getLogger(NoteController.class);
 
     @PostMapping
@@ -37,43 +41,8 @@ public class NoteController {
     @Produces(MediaType.APPLICATION_JSON)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public  void addNote(@RequestBody NoteDTO note){
-        handleRequest(note);
-
-    }
-
-    private void handleRequest(NoteDTO request){
-
-        Note note = new Note();
-        note.setName(request.getName());
-        note.setFormat(request.getFormat());
-        note.setContent(request.getContent());
-
-        noteRepository.save(note);
-
-        request.getTags().forEach(t->{
-
-
-            Tag tmpTag = tagRepository.findByTag(t);
-
-            if( tmpTag == null ){
-                Tag tag= new Tag();
-                tag.setTag(t);
-                tagRepository.save(tag);
-            }
-
-
-            tmpTag = tagRepository.findByTag(t);
-
-            NoteHasTag hasTag = new NoteHasTag();
-            hasTag.setTag(tmpTag);
-            hasTag.setNote(note);
-            hasTagRepository.save(hasTag);
-
-        });
-
-
+        noteService.save(note);
         LOG.info(note.toString());
-
 
     }
 

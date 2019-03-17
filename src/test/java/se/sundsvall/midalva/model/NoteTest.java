@@ -1,7 +1,8 @@
-package se.sundsvall.midalva.noteapi.model;
+package se.sundsvall.midalva.model;
 
 import org.junit.Assert;
 import org.junit.Test;
+import se.sundsvall.midalva.noteapi.model.Note;
 
 public class NoteTest {
 

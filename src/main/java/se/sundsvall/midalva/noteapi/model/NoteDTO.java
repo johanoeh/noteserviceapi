@@ -1,6 +1,6 @@
 package se.sundsvall.midalva.noteapi.model;
 
-import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,10 +8,8 @@ public class NoteDTO {
 
 
     private Long noteId;
-
     private String format;
     private String name;
-
     private List<String> tags;
     private String content;
 

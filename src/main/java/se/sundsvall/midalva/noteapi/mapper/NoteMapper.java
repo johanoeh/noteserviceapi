@@ -19,4 +19,18 @@ public class NoteMapper {
         return noteDTO;
 
     }
+
+
+    public static  Note map(NoteDTO noteDTO){
+
+        Note note = new Note();
+        note.setName(noteDTO.getName());
+        note.setFormat(noteDTO.getFormat());
+        note.setContent(noteDTO.getContent());
+        return note;
+    }
+
+
+
+
 }
