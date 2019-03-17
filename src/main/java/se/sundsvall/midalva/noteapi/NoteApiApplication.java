@@ -6,29 +6,43 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import se.sundsvall.midalva.noteapi.model.Note;
+import se.sundsvall.midalva.noteapi.model.NoteDTO;
+import se.sundsvall.midalva.noteapi.model.Tag;
 import se.sundsvall.midalva.noteapi.repo.NoteRepository;
+import se.sundsvall.midalva.noteapi.service.NoteService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootApplication
 public class NoteApiApplication implements CommandLineRunner {
 
 	@Autowired
-	NoteRepository repo;
+	NoteService noteService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(NoteApiApplication.class, args);
 	}
 
 
-	/**
-	 *
-	 */
-	//@Profile("local")
 	@Override
 	public void run(String... args){
 
-		IntStream.range(0,100).forEach(i -> System.out.println("Hello SpringBoot"));
+		List<String> tags = new ArrayList<>();
+		tags.add("Continuous integration");
+		tags.add("Jenkins");
+
+		NoteDTO note = new NoteDTO(
+
+				"Continuous integration",
+				"txt",
+				"In software engineering, continuous integration (CI) is the practice of merging all developer ",
+						tags
+		);
+
+		noteService.save(note);
 
 	}
 

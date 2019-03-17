@@ -24,12 +24,6 @@ import javax.ws.rs.core.MediaType;
 @RequestMapping("/note")
 public class NoteController {
 
-    @Autowired
-    NoteRepository noteRepository;
-    @Autowired
-    TagRepository tagRepository;
-    @Autowired
-    NoteHasTagRepository hasTagRepository;
 
     @Autowired
     NoteService noteService;

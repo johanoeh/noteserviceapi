@@ -28,9 +28,7 @@ public class GetNoteController {
     @RequestMapping(path = "/note/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public NoteDTO getNote(@PathVariable("id") Long id) {
-
         return noteService.getNote(id);
     }
-
 
 }
