@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class NoteService  {
+public class NoteService {
 
     private NoteRepository noteRepository;
     private TagRepository tagRepository;
@@ -30,7 +30,7 @@ public class NoteService  {
 
 
     @Autowired
-    public NoteService( NoteRepository noteRepository, TagRepository tagRepository, NoteHasTagRepository hasTagRepository) {
+    public NoteService(NoteRepository noteRepository, TagRepository tagRepository, NoteHasTagRepository hasTagRepository) {
 
         this.noteRepository = noteRepository;
         this.tagRepository = tagRepository;
@@ -38,19 +38,19 @@ public class NoteService  {
     }
 
 
-    public void save(NoteDTO noteDTO){
+    public void save(NoteDTO noteDTO) {
 
         Note note = NoteMapper.map(noteDTO);
 
         noteRepository.save(note);
 
-        noteDTO.getTags().forEach(t->{
+        noteDTO.getTags().forEach(t -> {
 
 
             Tag tmpTag = tagRepository.findByTag(t);
 
-            if( tmpTag == null ){
-                Tag tag= new Tag();
+            if (tmpTag == null) {
+                Tag tag = new Tag();
                 tag.setTag(t);
                 tagRepository.save(tag);
             }
@@ -76,22 +76,22 @@ public class NoteService  {
         Tag t = tagRepository.findByTag(tag);
         List<NoteHasTag> byTag = hasTagRepository.findByTagTagId(t.getTagId());
 
-        if(byTag.isEmpty()){
+        if (byTag.isEmpty()) {
 
-            throw  new NoteNotFoundException("Couldn't find any Note tagged with: '"+tag+"'");
+            throw new NoteNotFoundException("Couldn't find any Note tagged with: '" + tag + "'");
         }
 
-        byTag.forEach(fTag->{
+        byTag.forEach(fTag -> {
 
             Long noteId = fTag.getNote().getNoteId();
             List<NoteHasTag> hasTags = hasTagRepository.findByNoteNoteId(noteId);
             List<String> tags = new ArrayList<>();
 
-            hasTags.forEach(hasTag->{
+            hasTags.forEach(hasTag -> {
                 tags.add(hasTag.getTag().getTag());
             });
 
-            noteDTOs.add(NoteMapper.map(fTag.getNote(),tags));
+            noteDTOs.add(NoteMapper.map(fTag.getNote(), tags));
 
         });
 
@@ -103,6 +103,10 @@ public class NoteService  {
         Optional<Note> noteOptional = noteRepository.findById(id);
         NoteDTO noteDTO = null;
 
+        if (!noteOptional.isPresent()){
+            throw new NoteNotFoundException("Couldn't find note with id: "+id);
+        }
+
         if (noteOptional.isPresent()) {
 
             Note note = noteOptional.get();
@@ -112,9 +116,7 @@ public class NoteService  {
                 tags.add(t.getTag().getTag());
             });
 
-            noteDTO = NoteMapper.map(note,tags);
-
-
+            noteDTO = NoteMapper.map(note, tags);
 
         }
         return noteDTO;
