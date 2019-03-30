@@ -1,4 +1,4 @@
-package se.sundsvall.midalva.noteapi.model;
+package se.sundsvall.midalva.noteapi.model.db;
 
 import lombok.*;
 import javax.persistence.*;
@@ -10,8 +10,8 @@ import javax.persistence.*;
 @ToString
 
 @Entity
-@Table(name = "Note")
-public class Note {
+@Table(name = "note")
+public class NoteEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

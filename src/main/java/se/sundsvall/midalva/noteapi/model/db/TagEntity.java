@@ -1,16 +1,16 @@
-package se.sundsvall.midalva.noteapi.model;
+package se.sundsvall.midalva.noteapi.model.db;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Tag")
-public class Tag {
+@Table(name = "tagEntity")
+public class TagEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long tagId;
 
-    @Column(name="tag", unique=true)
+    @Column(name="tagEntity", unique=true)
     private String tag;
 
     public Long getTagId() {

@@ -1,33 +1,33 @@
 package se.sundsvall.midalva.noteapi.mapper;
 
-import se.sundsvall.midalva.noteapi.model.Note;
-import se.sundsvall.midalva.noteapi.model.NoteDTO;
+import se.sundsvall.midalva.noteapi.model.db.NoteEntity;
+import se.sundsvall.midalva.noteapi.model.dto.Note;
 
 import java.util.List;
 
 public class NoteMapper {
 
-    public static NoteDTO map(Note note, List<String> tags) {
+    public static Note map(NoteEntity noteEntity, List<String> tags) {
 
-        NoteDTO noteDTO = new NoteDTO();
-        noteDTO.setNoteId(note.getNoteId());
-        noteDTO.setContent(note.getContent());
-        noteDTO.setFormat(note.getFormat());
-        noteDTO.setName(note.getName());
-        noteDTO.getTags().addAll(tags);
+        Note note = new Note();
+        note.setNoteId(noteEntity.getNoteId());
+        note.setContent(noteEntity.getContent());
+        note.setFormat(noteEntity.getFormat());
+        note.setName(noteEntity.getName());
+        note.getTags().addAll(tags);
 
-        return noteDTO;
+        return note;
 
     }
 
 
-    public static  Note map(NoteDTO noteDTO){
+    public static NoteEntity map(Note note){
 
-        Note note = new Note();
-        note.setName(noteDTO.getName());
-        note.setFormat(noteDTO.getFormat());
-        note.setContent(noteDTO.getContent());
-        return note;
+        NoteEntity noteEntity = new NoteEntity();
+        noteEntity.setName(note.getName());
+        noteEntity.setFormat(note.getFormat());
+        noteEntity.setContent(note.getContent());
+        return noteEntity;
     }
 
 

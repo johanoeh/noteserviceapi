@@ -1,12 +1,12 @@
 package se.sundsvall.midalva.noteapi.repo;
 
 import org.springframework.data.repository.CrudRepository;
-import se.sundsvall.midalva.noteapi.model.NoteHasTag;
+import se.sundsvall.midalva.noteapi.model.db.NoteHasTagEntity;
 
 import java.util.List;
 
-public interface NoteHasTagRepository extends CrudRepository<NoteHasTag,Long> {
+public interface NoteHasTagRepository extends CrudRepository<NoteHasTagEntity,Long> {
 
-    public List<NoteHasTag> findByNoteNoteId(Long noteId);
-    public List<NoteHasTag> findByTagTagId(Long tagId);
+    public List<NoteHasTagEntity> findAllByNoteEntityNoteId(Long noteId);
+    public List<NoteHasTagEntity> findAllByTagEntityTagId(Long tagId);
 }

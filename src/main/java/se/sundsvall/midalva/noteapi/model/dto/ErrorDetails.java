@@ -1,6 +1,6 @@
-package se.sundsvall.midalva.noteapi.model;
+package se.sundsvall.midalva.noteapi.model.dto;
 
-import java.sql.Timestamp;
+
 import java.util.Date;
 
 public class ErrorDetails {

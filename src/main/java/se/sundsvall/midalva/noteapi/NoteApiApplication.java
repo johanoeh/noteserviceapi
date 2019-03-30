@@ -4,17 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-import se.sundsvall.midalva.noteapi.model.Note;
-import se.sundsvall.midalva.noteapi.model.NoteDTO;
-import se.sundsvall.midalva.noteapi.model.Tag;
-import se.sundsvall.midalva.noteapi.repo.NoteRepository;
+import se.sundsvall.midalva.noteapi.model.dto.Note;
 import se.sundsvall.midalva.noteapi.service.NoteService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @SpringBootApplication
 public class NoteApiApplication implements CommandLineRunner {
@@ -34,7 +28,7 @@ public class NoteApiApplication implements CommandLineRunner {
 		tags.add("Continuous integration");
 		tags.add("Jenkins");
 
-		NoteDTO note = new NoteDTO(
+		Note note = new Note(
 
 				"Continuous integration",
 				"txt",

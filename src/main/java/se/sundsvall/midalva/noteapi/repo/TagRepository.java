@@ -1,12 +1,13 @@
 package se.sundsvall.midalva.noteapi.repo;
 
 import org.springframework.data.repository.CrudRepository;
-import se.sundsvall.midalva.noteapi.model.Tag;
+import se.sundsvall.midalva.noteapi.model.db.TagEntity;
+
 import javax.persistence.Id;
 
 
-public interface TagRepository extends CrudRepository<Tag, Id> {
+public interface TagRepository extends CrudRepository<TagEntity, Id> {
 
-    public Tag findByTag(String tag);
+    public TagEntity findByTag(String tag);
 
 }

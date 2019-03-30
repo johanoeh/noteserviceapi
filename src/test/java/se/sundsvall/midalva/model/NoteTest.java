@@ -2,7 +2,7 @@ package se.sundsvall.midalva.model;
 
 import org.junit.Assert;
 import org.junit.Test;
-import se.sundsvall.midalva.noteapi.model.Note;
+import se.sundsvall.midalva.noteapi.model.db.NoteEntity;
 
 public class NoteTest {
 
@@ -14,17 +14,16 @@ public class NoteTest {
     @Test
     public void testSetName() {
 
-        Note note = new Note();
-        note.setNoteId(ID);
-        note.setName(NAME);
-        note.setFormat(FORMAT);
-        note.setContent(CONTENT);
+        NoteEntity noteEntity = new NoteEntity();
+        noteEntity.setNoteId(ID);
+        noteEntity.setName(NAME);
+        noteEntity.setFormat(FORMAT);
+        noteEntity.setContent(CONTENT);
 
-        Assert.assertEquals(NAME, note.getName());
-        Assert.assertEquals(FORMAT,note.getFormat());
-        Assert.assertEquals(CONTENT,note.getContent());
-        Assert.assertEquals(ID, note.getNoteId());
-
+        Assert.assertEquals(NAME, noteEntity.getName());
+        Assert.assertEquals(FORMAT, noteEntity.getFormat());
+        Assert.assertEquals(CONTENT, noteEntity.getContent());
+        Assert.assertEquals(ID, noteEntity.getNoteId());
 
     }
 }

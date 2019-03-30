@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import se.sundsvall.midalva.noteapi.exception.NoteNotFoundException;
 import se.sundsvall.midalva.noteapi.mapper.NoteMapper;
-import se.sundsvall.midalva.noteapi.model.Note;
-import se.sundsvall.midalva.noteapi.model.NoteDTO;
-import se.sundsvall.midalva.noteapi.model.NoteHasTag;
-import se.sundsvall.midalva.noteapi.model.Tag;
+import se.sundsvall.midalva.noteapi.model.db.NoteEntity;
+import se.sundsvall.midalva.noteapi.model.dto.Note;
+import se.sundsvall.midalva.noteapi.model.db.NoteHasTagEntity;
+import se.sundsvall.midalva.noteapi.model.db.TagEntity;
 import se.sundsvall.midalva.noteapi.repo.NoteHasTagRepository;
 import se.sundsvall.midalva.noteapi.repo.NoteRepository;
 import se.sundsvall.midalva.noteapi.repo.TagRepository;
@@ -38,19 +38,19 @@ public class NoteService {
     }
 
 
-    public void save(NoteDTO noteDTO) {
+    public void save(Note note) {
 
-        Note note = NoteMapper.map(noteDTO);
+        NoteEntity noteEntity = NoteMapper.map(note);
 
-        noteRepository.save(note);
+        noteRepository.save(noteEntity);
 
-        noteDTO.getTags().forEach(t -> {
+        note.getTags().forEach(t -> {
 
 
-            Tag tmpTag = tagRepository.findByTag(t);
+            TagEntity tmpTag = tagRepository.findByTag(t);
 
             if (tmpTag == null) {
-                Tag tag = new Tag();
+                TagEntity tag = new TagEntity();
                 tag.setTag(t);
                 tagRepository.save(tag);
             }
@@ -58,68 +58,70 @@ public class NoteService {
 
             tmpTag = tagRepository.findByTag(t);
 
-            NoteHasTag hasTag = new NoteHasTag();
-            hasTag.setTag(tmpTag);
-            hasTag.setNote(note);
+            NoteHasTagEntity hasTag = new NoteHasTagEntity();
+            hasTag.setTagEntity(tmpTag);
+            hasTag.setNoteEntity(noteEntity);
             hasTagRepository.save(hasTag);
 
         });
 
-        LOG.info(note.toString());
+        LOG.info(noteEntity.toString());
 
     }
 
-    public List<NoteDTO> findNotesByTag(String tag) {
+    public List<Note> findNotesByTag(String tag) {
 
-        List<NoteDTO> noteDTOs = new ArrayList<>();
+        List<Note> notes = new ArrayList<>();
 
-        Tag t = tagRepository.findByTag(tag);
-        List<NoteHasTag> byTag = hasTagRepository.findByTagTagId(t.getTagId());
+        TagEntity t = tagRepository.findByTag(tag);
+        List<NoteHasTagEntity> byTag = hasTagRepository.findAllByTagEntityTagId(t.getTagId());
 
         if (byTag.isEmpty()) {
 
-            throw new NoteNotFoundException("Couldn't find any Note tagged with: '" + tag + "'");
+            throw new NoteNotFoundException("Couldn't find any NoteEntity tagged with: '" + tag + "'");
         }
 
         byTag.forEach(fTag -> {
 
-            Long noteId = fTag.getNote().getNoteId();
-            List<NoteHasTag> hasTags = hasTagRepository.findByNoteNoteId(noteId);
+            Long noteId = fTag.getNoteEntity().getNoteId();
+            List<NoteHasTagEntity> hasTags = hasTagRepository.findAllByNoteEntityNoteId(noteId);
             List<String> tags = new ArrayList<>();
 
             hasTags.forEach(hasTag -> {
-                tags.add(hasTag.getTag().getTag());
+                tags.add(hasTag.getTagEntity().getTag());
             });
 
-            noteDTOs.add(NoteMapper.map(fTag.getNote(), tags));
+            notes.add(NoteMapper.map(fTag.getNoteEntity(), tags));
 
         });
 
-        return noteDTOs;
+        return notes;
     }
 
-    public NoteDTO getNote(@PathVariable("id") Long id) {
+    public Note getNote(Long id) {
 
-        Optional<Note> noteOptional = noteRepository.findById(id);
-        NoteDTO noteDTO = null;
+        Optional<NoteEntity> noteOptional = noteRepository.findById(id);
+        Note note = null;
 
-        if (!noteOptional.isPresent()){
-            throw new NoteNotFoundException("Couldn't find note with id: "+id);
+        if (!noteOptional.isPresent()) {
+            throw new NoteNotFoundException("Couldn't find note with id: " + id);
         }
 
         if (noteOptional.isPresent()) {
 
-            Note note = noteOptional.get();
+            NoteEntity noteEntity = noteOptional.get();
             List<String> tags = new ArrayList<>();
-            List<NoteHasTag> byNoteId = hasTagRepository.findByNoteNoteId(note.getNoteId());
-            byNoteId.forEach(t -> {
-                tags.add(t.getTag().getTag());
-            });
+            List<NoteHasTagEntity> byNoteId = hasTagRepository.findAllByNoteEntityNoteId(noteEntity.getNoteId());
+            if (byNoteId != null) {
+                byNoteId.forEach(t -> {
+                    tags.add(t.getTagEntity().getTag());
+                });
+            }
 
-            noteDTO = NoteMapper.map(note, tags);
+            note = NoteMapper.map(noteEntity, tags);
 
         }
-        return noteDTO;
+        return note;
     }
 
 

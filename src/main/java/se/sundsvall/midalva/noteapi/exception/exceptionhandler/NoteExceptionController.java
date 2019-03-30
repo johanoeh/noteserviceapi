@@ -1,13 +1,11 @@
 package se.sundsvall.midalva.noteapi.exception.exceptionhandler;
 
-import lombok.EqualsAndHashCode;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import se.sundsvall.midalva.noteapi.exception.NoteNotFoundException;
-import se.sundsvall.midalva.noteapi.model.ErrorDetails;
+import se.sundsvall.midalva.noteapi.model.dto.ErrorDetails;
 import java.util.Date;
 
 
