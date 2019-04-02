@@ -1,13 +1,19 @@
 package se.sundsvall.midalva.noteapi.service;
 
+
+
+import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
+import com.opentable.db.postgres.junit.SingleInstancePostgresRule;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import se.sundsvall.midalva.noteapi.model.dto.Note;
@@ -15,14 +21,16 @@ import se.sundsvall.midalva.noteapi.model.dto.Note;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
-public class NoteServiceTest {
+@Import(EmbeddedPostgresConfig.class)
+public class NoteServiceIT {
 
-   private static final Logger LOG = LoggerFactory.getLogger(NoteServiceTest.class);
+    @Rule
+    public SingleInstancePostgresRule pg = EmbeddedPostgresRules.singleInstance();
+
+   private static final Logger LOG = LoggerFactory.getLogger(NoteServiceIT.class);
 
     @Autowired
     private NoteService noteService;
@@ -32,7 +40,7 @@ public class NoteServiceTest {
     private final static String TEST_TAG_03 = "@SpringbooTest";
 
     @Before
-    public void setUp(){
+    public void setUp() throws Exception {
 
         Note note01= new Note();
         note01.setName("How to use @SpringbooTest to test a @service");
@@ -52,6 +60,10 @@ public class NoteServiceTest {
 
         note02.getTags().add(TEST_TAG_02);
         note02.getTags().add(TEST_TAG_01);
+
+        noteService.save(note01);
+        noteService.save(note02);
+
 
     }
 
