@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-public class NoteApiApplication implements CommandLineRunner {
+public class NoteApiApplication {
 
 	@Autowired
 	NoteService noteService;
@@ -20,24 +20,5 @@ public class NoteApiApplication implements CommandLineRunner {
 		SpringApplication.run(NoteApiApplication.class, args);
 	}
 
-
-	@Override
-	public void run(String... args){
-
-		List<String> tags = new ArrayList<>();
-		tags.add("Continuous integration");
-		tags.add("Jenkins");
-
-		Note note = new Note(
-
-				"Continuous integration",
-				"txt",
-				"In software engineering, continuous integration (CI) is the practice of merging all developer ",
-						tags
-		);
-
-		noteService.save(note);
-
-	}
 
 }

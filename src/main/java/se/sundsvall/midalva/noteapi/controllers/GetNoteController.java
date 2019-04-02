@@ -23,16 +23,18 @@ public class GetNoteController {
     @ApiOperation(value = "get a note by note id", notes = "get a note by it's id")
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Success",response = Note.class),
+            @ApiResponse(code = 200, message = "Success", response = Note.class),
             @ApiResponse(code = 400, message = "Bad Request", response = ErrorDetails.class),
             @ApiResponse(code = 404, message = "Not found", response = ErrorDetails.class),
             @ApiResponse(code = 500, message = "Internal error", response = ErrorDetails.class)
     })
 
+    @CrossOrigin(origins = "http://localhost:8089")
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(path = "/note/{id}" , method = RequestMethod.GET)
+    @RequestMapping(path = "/note/{id}", method = RequestMethod.GET)
     @Produces(MediaType.APPLICATION_JSON)
-    public @ResponseBody  Note getNote( @ApiParam(value = "id", example="1000", required = true)  @PathVariable("id") Long id ) {
+    public @ResponseBody
+    Note getNote(@ApiParam(value = "id", example = "1000", required = true) @PathVariable("id") Long id) {
         return noteService.getNote(id);
     }
 

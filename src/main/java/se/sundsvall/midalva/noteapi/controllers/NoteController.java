@@ -40,6 +40,7 @@ public class NoteController {
             @ApiResponse(code = 500, message = "Internal error", response = ErrorDetails.class)
     })
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @RequestMapping(method = RequestMethod.POST)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

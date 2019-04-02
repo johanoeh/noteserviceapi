@@ -2,6 +2,7 @@ package se.sundsvall.midalva.noteapi.controllers;
 
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import se.sundsvall.midalva.noteapi.model.dto.ErrorDetails;
 import se.sundsvall.midalva.noteapi.model.dto.Note;
@@ -28,6 +29,8 @@ public class GetNotesByTagController {
             @ApiResponse(code = 500, message = "Internal error", response = ErrorDetails.class)
     })
 
+    //@CrossOrigin(origins = "http://localhost:8080")
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(path="/note/tag/{tag}", method = RequestMethod.GET)
     @Produces(MediaType.APPLICATION_JSON)
     public @ResponseBody List<Note> getNote(@ApiParam(value = "tag", example = "UML",required = true) @PathVariable("tag") String tag) {
